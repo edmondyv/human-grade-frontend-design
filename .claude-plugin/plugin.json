@@ -1,0 +1,6 @@
+{
+  "name": "frontend-design-system",
+  "description": "Production-grade frontend design system that eliminates AI slop. Opinionated typography, color, layout, animation, and conversion rules informed by 57 peer-reviewed papers on prompt engineering. Creates Awwwards-quality interfaces, not generic AI output.",
+  "version": "1.0.0",
+  "author": "edmondyv"
+}
