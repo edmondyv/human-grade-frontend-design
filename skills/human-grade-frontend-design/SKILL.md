@@ -1,5 +1,5 @@
 ---
-name: frontend-design
+name: human-grade-frontend-design
 description: >
   This skill should be used when the user asks to "build a landing page", "create a website",
   "design a frontend", "make a web app", "build a dashboard", "create a SaaS page",

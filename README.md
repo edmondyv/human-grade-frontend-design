@@ -1,4 +1,4 @@
-# Frontend Design System
+# Human Grade Frontend Design
 
 A Claude Code skill that eliminates AI slop from frontend design. Opinionated typography, color, layout, animation, and conversion rules informed by 57 peer-reviewed papers on prompt engineering.
 
