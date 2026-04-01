@@ -312,3 +312,109 @@ y += (targetY - y) * 0.08;
 element.style.transform = `translate(${x}px, ${y}px)`;
 ```
 **Warning:** Only use on 1-2 hero elements. Never as a persistent cursor follower.
+
+---
+
+## Component Library Animation Patterns
+
+Modern animated component libraries have established new standards for interaction design. These patterns can be adapted to vanilla CSS/JS:
+
+### Spotlight / Glow Card Effect (Aceternity UI)
+A radial gradient follows the cursor over a card, creating a spotlight glow:
+```css
+.card::before {
+  content: '';
+  position: absolute;
+  top: var(--mouse-y, 50%);
+  left: var(--mouse-x, 50%);
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, var(--accent-muted) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.card:hover::before { opacity: 1; }
+```
+JS sets `--mouse-x` and `--mouse-y` on mousemove. Best for: feature cards, pricing cards.
+
+### Shimmer Border (Magic UI)
+An animated conic gradient rotates around a card border using `@property`:
+```css
+@property --shimmer-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+.featured-card::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: conic-gradient(from var(--shimmer-angle), var(--accent), var(--secondary), var(--accent));
+  z-index: -1;
+  animation: shimmer-rotate 4s linear infinite;
+}
+@keyframes shimmer-rotate { to { --shimmer-angle: 360deg; } }
+```
+Best for: featured/highlighted cards, premium CTAs, pricing tiers.
+
+### Gradient Text Shimmer (Magic UI)
+Text with an animated gradient that sweeps across:
+```css
+.shimmer-text {
+  background: linear-gradient(90deg, var(--accent), var(--secondary), var(--accent));
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: text-shimmer 4s ease-in-out infinite;
+}
+@keyframes text-shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+```
+Best for: hero accent text, feature titles, premium labels.
+
+### Magnetic Button (React Bits)
+Button shifts toward cursor on hover using mousemove to calculate offset:
+```javascript
+btn.addEventListener('mousemove', function(e) {
+  var rect = btn.getBoundingClientRect();
+  var x = (e.clientX - rect.left - rect.width / 2) * 0.15;
+  var y = (e.clientY - rect.top - rect.height / 2) * 0.3;
+  btn.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+});
+btn.addEventListener('mouseleave', function() {
+  btn.style.transform = 'translate(0, 0)';
+});
+```
+Best for: hero CTAs, single primary actions. **Never** on navigation or form buttons.
+
+### Animated Number Ticker
+Counts up from 0 with ease-out deceleration, triggered by IntersectionObserver:
+```javascript
+function animateCounter(el, target, duration) {
+  var startTime = null;
+  function ease(t) { return 1 - Math.pow(1 - t, 4); }
+  function step(ts) {
+    if (!startTime) startTime = ts;
+    var p = Math.min((ts - startTime) / duration, 1);
+    el.textContent = Math.floor(target * ease(p)).toLocaleString();
+    if (p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+```
+Best for: social proof stats, metrics sections, pricing numbers.
+
+### Key Libraries Reference
+| Library | URL | Best For | Can Adapt to Vanilla |
+|---|---|---|---|
+| **Aceternity UI** | aceternity.com | Card effects, text animations, backgrounds | Yes — CSS + minimal JS |
+| **Magic UI** | magicui.design | Borders, gradients, number tickers | Yes — CSS @property + JS |
+| **21st.dev** | 21st.dev | Component discovery, design patterns | Conceptual inspiration |
+| **React Bits** | reactbits.dev | Cursor effects, text animations, magnetics | Yes — mousemove JS |
+| **Framer Motion** | framer.com/motion | Layout animations, spring physics | Partial — CSS springs |
+| **GSAP** | gsap.com | Timeline sequences, ScrollTrigger | Yes — direct use |

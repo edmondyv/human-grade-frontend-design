@@ -121,6 +121,14 @@ Every animation must serve a purpose: guide the eye, reinforce hierarchy, provid
 - Fade-in durations longer than 400ms on scroll — users scroll past before the animation completes.
 - Animations on elements that don't need them.
 
+**Component Library Inspiration:** When designing animations, study patterns from modern animated component libraries for inspiration — not to copy React code, but to understand what motion patterns feel premium. Key libraries to study:
+- **Aceternity UI** (aceternity.com) — Spotlight card effects, 3D card tilts, text generation effects, moving borders, aurora backgrounds
+- **Magic UI** (magicui.design) — Shimmer borders, animated gradient text, number tickers, orbit animations, ripple effects
+- **21st.dev** — Community-driven component marketplace with modern animation patterns and Framer Motion integrations
+- **React Bits** (reactbits.dev) — Blur text reveals, circular text, splash cursors, blob cursors, magnetic elements, text scatter effects
+
+These libraries set the bar for modern interaction design. Adapt their visual concepts to vanilla CSS/JS when building single-file prototypes.
+
 **→ Deep dive: `references/animation-guide.md`** — Performance rules ("Death Trio"), GSAP/Lenis patterns, scroll-driven CSS animations, advanced patterns.
 
 ### Hover & Interaction States
