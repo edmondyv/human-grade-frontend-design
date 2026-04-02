@@ -409,6 +409,94 @@ function animateCounter(el, target, duration) {
 ```
 Best for: social proof stats, metrics sections, pricing numbers.
 
+### 3D Tilt Card (Aceternity UI / React Bits)
+Card tilts in 3D space following the cursor, with inner elements shifting at different rates for parallax depth:
+```css
+.card-container { perspective: 1000px; }
+.card {
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease-out;
+}
+.card .inner-elevated { transform: translateZ(30px); }
+```
+```javascript
+card.addEventListener('mousemove', function(e) {
+  var rect = card.getBoundingClientRect();
+  var rotateY = ((e.clientX - (rect.left + rect.width / 2)) / (rect.width / 2)) * 8;
+  var rotateX = -((e.clientY - (rect.top + rect.height / 2)) / (rect.height / 2)) * 8;
+  card.style.transform = 'rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg)';
+});
+card.addEventListener('mouseleave', function() {
+  card.style.transform = 'rotateX(0) rotateY(0)';
+});
+```
+Best for: pricing cards, feature showcases, product cards. Keep rotation subtle (6-10 deg max).
+
+### Aurora / Mesh Gradient Background (Aceternity UI)
+Large blurred blobs drift slowly across a section, blending like northern lights:
+```css
+.aurora-blob {
+  position: absolute;
+  width: 40vmax;
+  height: 40vmax;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.1;
+  will-change: transform;
+}
+.blob-1 {
+  background: var(--accent);
+  animation: drift1 18s ease-in-out infinite;
+}
+.blob-2 {
+  background: var(--secondary);
+  animation: drift2 22s ease-in-out infinite;
+}
+@keyframes drift1 {
+  0%, 100% { transform: translate(-10%, -5%); }
+  50% { transform: translate(15%, 10%); }
+}
+```
+Best for: hero sections, CTA sections, above-the-fold drama. Keep opacity very low (0.06-0.12).
+
+### Split-Letter Text Animation (React Bits BlurText)
+Each letter animates in individually with staggered delay and blur-to-clear transition:
+```javascript
+heading.innerHTML = heading.textContent.split('').map(function(char, i) {
+  return '<span style="--i:' + i + '" class="letter">' +
+    (char === ' ' ? '&nbsp;' : char) + '</span>';
+}).join('');
+```
+```css
+.letter {
+  display: inline-block;
+  opacity: 0;
+  filter: blur(8px);
+  transform: translateY(16px);
+  animation: letterReveal 0.4s ease forwards;
+  animation-delay: calc(var(--i) * 0.03s);
+}
+@keyframes letterReveal {
+  to { opacity: 1; filter: blur(0); transform: translateY(0); }
+}
+```
+Best for: hero headlines, section titles, dramatic text entrances. Trigger via IntersectionObserver.
+
+### Scroll-Driven Clip-Path Reveal (CSS-only, Chromium)
+Elements reveal progressively as you scroll, with no JS needed:
+```css
+@keyframes clipReveal {
+  from { clip-path: inset(0 100% 0 0); opacity: 0; }
+  to { clip-path: inset(0 0 0 0); opacity: 1; }
+}
+.scroll-reveal {
+  animation: clipReveal linear both;
+  animation-timeline: view();
+  animation-range: entry 10% cover 40%;
+}
+```
+**Note:** `animation-timeline: view()` is Chromium-only (Chrome 115+). Always pair with an IntersectionObserver fallback for Firefox/Safari. Best for: feature sections, testimonials, content blocks.
+
 ### Key Libraries Reference
 | Library | URL | Best For | Can Adapt to Vanilla |
 |---|---|---|---|
